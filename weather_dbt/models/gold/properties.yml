@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: gold_dim_cities
+    description: Final city dimension (star schema)
+    columns:
+      - name: city_id
+        description: Unique city identifier
+        tests:
+          - unique
+          - not_null
+      - name: city_name
+        description: City name
+        tests:
+          - unique
+          - not_null
+
+  - name: gold_dim_dates
+    description: Final date dimension (star schema)
+    columns:
+      - name: date_id
+        description: Date identifier
+        tests:
+          - unique
+          - not_null
+      - name: day_type
+        tests:
+          - accepted_values:
+              values: ['Weekend', 'Weekday']
+
+  - name: gold_dim_weather_codes
+    description: Final weather code dimension (star schema)
+    columns:
+      - name: weather_code
+        description: Weather code
+        tests:
+          - unique
+          - not_null
+
+  - name: gold_fct_weather
+    description: Final weather fact table with business logic (star schema)
+    columns:
+      - name: weather_id
+        description: Unique weather record identifier
+        tests:
+          - unique
+          - not_null
+      - name: date_id
+        description: Reference to gold_dim_dates
+        tests:
+          - not_null
+          - relationships:
+              to: ref('gold_dim_dates')
+              field: date_id
+      - name: weather_code
+        description: Reference to gold_dim_weather_codes
+        tests:
+          - not_null
+          - relationships:
+              to: ref('gold_dim_weather_codes')
+              field: weather_code
+      - name: temperature_celsius
+        tests:
+          - not_null
+      - name: temperature_category
+        tests:
+          - accepted_values:
+              values: ['Freezing', 'Cold', 'Cool', 'Warm', 'Hot']
+      - name: humidity_category
+        tests:
+          - accepted_values:
+              values: ['Dry', 'Comfortable', 'Humid']

@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: silver_dim_cities
+    description: Cleaned city dimension
+    columns:
+      - name: city_id
+        description: Unique city identifier
+        tests:
+          - unique
+          - not_null
+      - name: city_name
+        description: City name
+        tests:
+          - unique
+          - not_null
+
+  - name: silver_dim_dates
+    description: Cleaned date dimension
+    columns:
+      - name: date_id
+        description: Date in YYYYMMDD format
+        tests:
+          - unique
+          - not_null
+      - name: day_type
+        tests:
+          - accepted_values:
+              values: ['Weekend', 'Weekday']
+
+  - name: silver_dim_weather_codes
+    description: Cleaned weather code dimension
+    columns:
+      - name: weather_code
+        description: Weather code number
+        tests:
+          - unique
+          - not_null
+      - name: description
+        tests:
+          - not_null
+
+  - name: silver_fct_weather
+    description: Cleaned weather facts (no joins)
+    columns:
+      - name: weather_id
+        tests:
+          - unique
+          - not_null
+      - name: temperature_celsius
+        tests:
+          - not_null
+      - name: humidity_percent
+        tests:
+          - not_null

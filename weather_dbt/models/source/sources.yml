@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw data from Open-Meteo API
+    catalog: weather
+    schema: raw
+    tables:
+      - name: weather_raw
+        description: Weather data extracted from API
+        columns:
+          - name: city
+          - name: timestamp
+          - name: temperature_celsius
